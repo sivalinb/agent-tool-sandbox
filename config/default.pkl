@@ -1,0 +1,9 @@
+module SandboxPolicy
+project: String = "agent-tool-sandbox"
+cpus: Int(this >= 1 && this <= 4) = 1
+memoryMb: Int(this >= 256 && this <= 2048) = 256
+timeoutSeconds: Int(this >= 1 && this <= 30) = 8
+maxOutputBytes: Int(this >= 1024 && this <= 1048576) = 65536
+maxInputBytes: Int(this >= 1 && this <= 15000000) = 1000000
+network: "none" = "none"
+image: String = "python:3.12-slim"

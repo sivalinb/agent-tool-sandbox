@@ -1,0 +1,18 @@
+{
+  "pytest": {
+    "exit_code": 0,
+    "tail": "........................                                                 [100%]\n24 passed in 1.89s\n"
+  },
+  "eval": {
+    "exit_code": 0,
+    "tail": "    \"expected\": \"metrics\",\n      \"retrieved\": [\n        \"metrics\"\n      ]\n    },\n    {\n      \"question\": \"Can queued telemetry survive a crash using durable storage?\",\n      \"expected\": \"recovery\",\n      \"retrieved\": [\n        \"recovery\",\n        \"config\"\n      ]\n    },\n    {\n      \"question\": \"How should streamed chunks be used for token throughput?\",\n      \"expected\": \"inference\",\n      \"retrieved\": [\n        \"inference\"\n      ]\n    },\n    {\n      \"question\": \"Why do host and guest memory measurements differ?\",\n      \"expected\": \"resources\",\n      \"retrieved\": [\n        \"resources\",\n        \"isolation\",\n        \"evals\"\n      ]\n    },\n    {\n      \"question\": \"How do VM mounts affect isolated job security?\",\n      \"expected\": \"isolation\",\n      \"retrieved\": [\n        \"isolation\",\n        \"recovery\",\n        \"resources\"\n      ]\n    }\n  ],\n  \"domain_checks\": [\n    {\n      \"case\": \"Analyze CSV syntax only\",\n      \"passed\": true\n    },\n    {\n      \"case\": \"Analyze USGS events syntax only\",\n      \"passed\": true\n    },\n    {\n      \"case\": \"Deadline test syntax only\",\n      \"passed\": true\n    },\n    {\n      \"case\": \"Protected input test syntax only\",\n      \"passed\": true\n    },\n    {\n      \"case\": \"Network isolation test syntax only\",\n      \"passed\": true\n    },\n    {\n      \"case\": \"Output budget test syntax only\",\n      \"passed\": true\n    },\n    {\n      \"case\": \"Cross-job isolation test syntax only\",\n      \"passed\": true\n    },\n    {\n      \"case\": \"network policy\",\n      \"passed\": true\n    }\n  ],\n  \"mode\": \"offline evaluation; no live runtime or model claims\",\n  \"passed\": true\n}\n"
+  },
+  "pkl": {
+    "exit_code": 0,
+    "tail": "module tests\n  facts\n    \u2714 positive allocation\n\n100.0% tests pass [1 passed], 100.0% asserts pass [2 passed]\n"
+  },
+  "lint": {
+    "exit_code": 0,
+    "tail": "All checks passed!\n"
+  }
+}

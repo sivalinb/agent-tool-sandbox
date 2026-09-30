@@ -1,0 +1,242 @@
+{
+  "mode": "live sandbox enforcement evaluation",
+  "passed": true,
+  "cases": [
+    {
+      "case": "Analyze CSV",
+      "expected": "success",
+      "passed": true,
+      "report": {
+        "mode": "live Apple Container job",
+        "syntax_valid": true,
+        "imports": [
+          "csv"
+        ],
+        "policy": {
+          "cpus": 1,
+          "memoryMb": 256,
+          "timeoutSeconds": 8,
+          "maxOutputBytes": 65536,
+          "maxInputBytes": 1000000,
+          "network": "none",
+          "image": "python:3.12-slim"
+        },
+        "code_sha256": "7674bc64cdc464b80851f6c6f89e865854e741be9121a52dad8e16138a631741",
+        "enforcement": "VM per job, no network, unprivileged user, read-only root/input, 16 MiB temporary scratch, host deadline/output limits",
+        "note": "AST inspection is informational, not a security boundary.",
+        "result": {
+          "returncode": 0,
+          "stdout": "{\"count\": 3, \"mean\": 19.0, \"max\": 31.0}\n",
+          "stderr": "[0/6] [0s]\n[1/6] Fetching image [0s]\n[2/6] Unpacking image [0s]\n[3/6] Fetching kernel [0s]\n[4/6] Fetching init image [0s]\n[5/6] Unpacking init image [0s]\n[6/6] Starting container [0s]\n[6/6] Starting container [0s]\n",
+          "duration_s": 0.9425047079566866,
+          "reason": "completed"
+        },
+        "input_sha256": "305b1aa885330abe11b8b140985c90440c5f5c6f6a476f82fefa2b343ba39369",
+        "input_bytes": 88,
+        "passed": true
+      }
+    },
+    {
+      "case": "Deadline test",
+      "expected": "timeout",
+      "passed": true,
+      "report": {
+        "mode": "live Apple Container job",
+        "syntax_valid": true,
+        "imports": [],
+        "policy": {
+          "cpus": 1,
+          "memoryMb": 256,
+          "timeoutSeconds": 8,
+          "maxOutputBytes": 65536,
+          "maxInputBytes": 1000000,
+          "network": "none",
+          "image": "python:3.12-slim"
+        },
+        "code_sha256": "d8b5c4b6751d495e5ffef53e4af21891adb500da0df28dc19727ca0cda213d8b",
+        "enforcement": "VM per job, no network, unprivileged user, read-only root/input, 16 MiB temporary scratch, host deadline/output limits",
+        "note": "AST inspection is informational, not a security boundary.",
+        "result": {
+          "returncode": -9,
+          "stdout": "",
+          "stderr": "[0/6] [0s]\n[1/6] Fetching image [0s]\n[2/6] Unpacking image [0s]\n[3/6] Fetching kernel [0s]\n[4/6] Fetching init image [0s]\n[5/6] Unpacking init image [0s]\n[6/6] Starting container [0s]\n[6/6] Starting container [0s]\n",
+          "duration_s": 8.08456758299144,
+          "reason": "timeout"
+        },
+        "input_sha256": "305b1aa885330abe11b8b140985c90440c5f5c6f6a476f82fefa2b343ba39369",
+        "input_bytes": 88,
+        "passed": false
+      }
+    },
+    {
+      "case": "Protected input test",
+      "expected": "denied",
+      "passed": true,
+      "report": {
+        "mode": "live Apple Container job",
+        "syntax_valid": true,
+        "imports": [],
+        "policy": {
+          "cpus": 1,
+          "memoryMb": 256,
+          "timeoutSeconds": 8,
+          "maxOutputBytes": 65536,
+          "maxInputBytes": 1000000,
+          "network": "none",
+          "image": "python:3.12-slim"
+        },
+        "code_sha256": "2e61a021bc9b80f6386ad12437e501df303a04e8229895d77fd3d24c23c31aec",
+        "enforcement": "VM per job, no network, unprivileged user, read-only root/input, 16 MiB temporary scratch, host deadline/output limits",
+        "note": "AST inspection is informational, not a security boundary.",
+        "result": {
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "[0/6] [0s]\n[1/6] Fetching image [0s]\n[2/6] Unpacking image [0s]\n[3/6] Fetching kernel [0s]\n[4/6] Fetching init image [0s]\n[5/6] Unpacking init image [0s]\n[6/6] Starting container [0s]\n[6/6] Starting container [0s]\nTraceback (most recent call last):\n  File \"/job/bootstrap.py\", line 4, in <module>\n    runpy.run_path('/job/submitted.py',run_name='__main__')\n  File \"<frozen runpy>\", line 287, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/job/submitted.py\", line 1, in <module>\n    open(\"/input/data.csv\", \"w\").write(\"overwrite\")\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nOSError: [Errno 30] Read-only file system: '/input/data.csv'\n",
+          "duration_s": 0.913947792025283,
+          "reason": "completed"
+        },
+        "input_sha256": "305b1aa885330abe11b8b140985c90440c5f5c6f6a476f82fefa2b343ba39369",
+        "input_bytes": 88,
+        "passed": false
+      }
+    },
+    {
+      "case": "Network isolation test",
+      "expected": "denied",
+      "passed": true,
+      "report": {
+        "mode": "live Apple Container job",
+        "syntax_valid": true,
+        "imports": [
+          "socket"
+        ],
+        "policy": {
+          "cpus": 1,
+          "memoryMb": 256,
+          "timeoutSeconds": 8,
+          "maxOutputBytes": 65536,
+          "maxInputBytes": 1000000,
+          "network": "none",
+          "image": "python:3.12-slim"
+        },
+        "code_sha256": "3cf295f007821a7afbf8b69611cc8e059db52e9502d53707f47b10dd014139af",
+        "enforcement": "VM per job, no network, unprivileged user, read-only root/input, 16 MiB temporary scratch, host deadline/output limits",
+        "note": "AST inspection is informational, not a security boundary.",
+        "result": {
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "[0/6] [0s]\n[1/6] Fetching image [0s]\n[2/6] Unpacking image [0s]\n[3/6] Fetching kernel [0s]\n[4/6] Fetching init image [0s]\n[5/6] Unpacking init image [0s]\n[6/6] Starting container [0s]\n[6/6] Starting container [0s]\nTraceback (most recent call last):\n  File \"/job/bootstrap.py\", line 4, in <module>\n    runpy.run_path('/job/submitted.py',run_name='__main__')\n  File \"<frozen runpy>\", line 287, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/job/submitted.py\", line 2, in <module>\n    socket.create_connection((\"1.1.1.1\", 443), timeout=2)\n  File \"/usr/local/lib/python3.12/socket.py\", line 865, in create_connection\n    raise exceptions[0]\n  File \"/usr/local/lib/python3.12/socket.py\", line 850, in create_connection\n    sock.connect(sa)\nOSError: [Errno 101] Network is unreachable\n",
+          "duration_s": 0.8989271249738522,
+          "reason": "completed"
+        },
+        "input_sha256": "305b1aa885330abe11b8b140985c90440c5f5c6f6a476f82fefa2b343ba39369",
+        "input_bytes": 88,
+        "passed": false
+      }
+    },
+    {
+      "case": "Output budget test",
+      "expected": "output_limit",
+      "passed": true,
+      "report": {
+        "mode": "live Apple Container job",
+        "syntax_valid": true,
+        "imports": [],
+        "policy": {
+          "cpus": 1,
+          "memoryMb": 256,
+          "timeoutSeconds": 8,
+          "maxOutputBytes": 65536,
+          "maxInputBytes": 1000000,
+          "network": "none",
+          "image": "python:3.12-slim"
+        },
+        "code_sha256": "a84ec6e7dce20be5b6bdb65a321d5d95f4b3e5a80ac5af9cc5672aa52a1d41a5",
+        "enforcement": "VM per job, no network, unprivileged user, read-only root/input, 16 MiB temporary scratch, host deadline/output limits",
+        "note": "AST inspection is informational, not a security boundary.",
+        "result": {
+          "returncode": -9,
+          "stdout": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n[Repeated workload output truncated for the public evidence bundle]",
+          "stderr": "[0/6] [0s]\n[1/6] Fetching image [0s]\n[2/6] Unpacking image [0s]\n[3/6] Fetching kernel [0s]\n[4/6] Fetching init image [0s]\n[5/6] Unpacking init image [0s]\n[6/6] Starting container [0s]\n[6/6] Starting container [0s]\n",
+          "duration_s": 0.8948994579841383,
+          "reason": "output_limit"
+        },
+        "input_sha256": "305b1aa885330abe11b8b140985c90440c5f5c6f6a476f82fefa2b343ba39369",
+        "input_bytes": 88,
+        "passed": false
+      }
+    },
+    {
+      "case": "Cross-job isolation test",
+      "expected": "fresh",
+      "passed": true,
+      "report": {
+        "mode": "live Apple Container job",
+        "syntax_valid": true,
+        "imports": [
+          "pathlib"
+        ],
+        "policy": {
+          "cpus": 1,
+          "memoryMb": 256,
+          "timeoutSeconds": 8,
+          "maxOutputBytes": 65536,
+          "maxInputBytes": 1000000,
+          "network": "none",
+          "image": "python:3.12-slim"
+        },
+        "code_sha256": "6a1c5a75be97184180d6ee10ea435e2c59a56c4e7919a07cf7ff8fcdc312e96a",
+        "enforcement": "VM per job, no network, unprivileged user, read-only root/input, 16 MiB temporary scratch, host deadline/output limits",
+        "note": "AST inspection is informational, not a security boundary.",
+        "result": {
+          "returncode": 0,
+          "stdout": "FRESH\n",
+          "stderr": "[0/6] [0s]\n[1/6] Fetching image [0s]\n[2/6] Unpacking image [0s]\n[3/6] Fetching kernel [0s]\n[4/6] Fetching init image [0s]\n[5/6] Unpacking init image [0s]\n[6/6] Starting container [0s]\n[6/6] Starting container [0s]\n",
+          "duration_s": 0.9090657909982838,
+          "reason": "completed"
+        },
+        "input_sha256": "305b1aa885330abe11b8b140985c90440c5f5c6f6a476f82fefa2b343ba39369",
+        "input_bytes": 88,
+        "passed": true
+      }
+    },
+    {
+      "case": "Cross-job isolation test",
+      "expected": "fresh",
+      "passed": true,
+      "report": {
+        "mode": "live Apple Container job",
+        "syntax_valid": true,
+        "imports": [
+          "pathlib"
+        ],
+        "policy": {
+          "cpus": 1,
+          "memoryMb": 256,
+          "timeoutSeconds": 8,
+          "maxOutputBytes": 65536,
+          "maxInputBytes": 1000000,
+          "network": "none",
+          "image": "python:3.12-slim"
+        },
+        "code_sha256": "6a1c5a75be97184180d6ee10ea435e2c59a56c4e7919a07cf7ff8fcdc312e96a",
+        "enforcement": "VM per job, no network, unprivileged user, read-only root/input, 16 MiB temporary scratch, host deadline/output limits",
+        "note": "AST inspection is informational, not a security boundary.",
+        "result": {
+          "returncode": 0,
+          "stdout": "FRESH\n",
+          "stderr": "[0/6] [0s]\n[1/6] Fetching image [0s]\n[2/6] Unpacking image [0s]\n[3/6] Fetching kernel [0s]\n[4/6] Fetching init image [0s]\n[5/6] Unpacking init image [0s]\n[6/6] Starting container [0s]\n[6/6] Starting container [0s]\n",
+          "duration_s": 0.9383684170315973,
+          "reason": "completed"
+        },
+        "input_sha256": "305b1aa885330abe11b8b140985c90440c5f5c6f6a476f82fefa2b343ba39369",
+        "input_bytes": 88,
+        "passed": true
+      }
+    }
+  ],
+  "config_provenance": {
+    "mode": "Pkl evaluated",
+    "sha256": "86725313740e49454f552b6193015557773fd63b045d87c2aac08aca4956bd47"
+  }
+}

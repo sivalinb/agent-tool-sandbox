@@ -1,0 +1,13 @@
+{
+  "source_sha256": "86725313740e49454f552b6193015557773fd63b045d87c2aac08aca4956bd47",
+  "config": {
+    "project": "agent-tool-sandbox",
+    "cpus": 1,
+    "memoryMb": 256,
+    "timeoutSeconds": 8,
+    "maxOutputBytes": 65536,
+    "maxInputBytes": 1000000,
+    "network": "none",
+    "image": "python:3.12-slim"
+  }
+}

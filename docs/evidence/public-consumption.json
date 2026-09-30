@@ -1,0 +1,11 @@
+{
+  "exit_code": 0,
+  "result": {
+    "source": "usgs-quakes",
+    "result": {
+      "events": 229,
+      "mean_magnitude": 1.6472929569853487
+    }
+  },
+  "error": ""
+}

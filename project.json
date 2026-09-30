@@ -1,0 +1,6 @@
+{
+  "slug": "agent-tool-sandbox",
+  "title": "Agent Tool Sandbox",
+  "description": "Execute bounded analysis jobs in isolated Linux VMs.",
+  "port": 8502
+}
